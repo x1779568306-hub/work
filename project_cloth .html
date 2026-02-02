@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时尚生活馆 - 品质生活精选</title>
+    <style>
+        /* 基础样式 */
+        :root {
+            --primary-color: #2C3E50;
+            --secondary-color: #E74C3C;
+            --accent-color: #3498DB;
+            --bg-color: #F8F9FA;
+            --text-dark: #333333;
+            --text-light: #666666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+        }
+        
+        /* 顶部导航 */
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .search-bar {
+            display: flex;
+            width: 300px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .cart-icon {
+            position: relative;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 轮播图 */
+        .hero-slider {
+            max-width: 1200px;
+            margin: 30px auto;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-content {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 400px;
+        }
+        
+        /* 商品网格 */
+        .section-title {
+            text-align: center;
+            margin: 50px 0 30px;
+            font-size: 28px;
+            color: var(--primary-color);
+        }
+        
+        .product-grid {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            display: block;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+            height: 40px;
+            overflow: hidden;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .current-price {
+            font-size: 20px;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .add-to-cart {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+            
+            .nav-menu {
+                margin: 15px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .search-bar {
+                width: 100%;
+                margin: 10px 0;
+            }
+            
+            .hero-slider {
+                height: 250px;
+                margin: 15px;
+            }
+            
+            .slide-content {
+                left: 20px;
+                bottom: 20px;
+                padding: 15px;
+                max-width: 80%;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href=" " class="logo">时尚生活馆</a >
+            <ul class="nav-menu">
+                <li><a href="#">首页</a ></li>
+                <li><a href="#">新品上市</a ></li>
+                <li><a href="#">热销商品</a ></li>
+                <li><a href="#">服装鞋包</a ></li>
+                <li><a href="#">家居生活</a ></li>
+                <li><a href="#">数码家电</a ></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" placeholder="搜索商品...">
+                <button>搜索</button>
+            </div>
+            <div class="cart-icon">
+                🛒
+                <span class="cart-count">3</span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 轮播图 -->
+    <section class="hero-slider">
+        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200')">
+            <div class="slide-content">
+                <h2>秋季新品上市</h2>
+                <p>精选优质面料，打造舒适时尚体验</p >
+                <button class="add-to-cart" style="margin-top: 10px;">立即选购</button>
+            </div>
+        </div>
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200')">
+            <div class="slide-content">
+                <h2>限时折扣专场</h2>
+                <p>部分商品低至5折，优惠不容错过</p >
+                <button class="add-to-cart" style="margin-top: 10px;">查看优惠</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精选商品区 -->
+    <h2 class="section-title">精选商品</h2>
+    <div class="product-grid">
+        <!-- 商品卡片1 -->
+        <div class="product-card">
+            <a href="#" class="product-image">
+                < img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=500" alt="男士休闲夹克">
+            </a >
+            <div class="product-info">
+                <h3 class="product-title">男士秋季休闲夹克 韩版潮流外套</h3>
+                <div class="product-price">
+                    <span class="current-price">¥299.00</span>
+                    <span class="original-price">¥399.00</span>
+                </div>
+                <button class="add-to-cart">加入购物车</button>
+            </div>
+        </div>
+
+        <!-- 商品卡片2 -->
+        <div class="product-card">
+            <a href="#" class="product-image">
+                < img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=500" alt="运动鞋">
+            </a >
+            <div class="product-info">
+                <h3 class="product-title">新款气垫缓震运动鞋 舒适透气跑步鞋</h3>
+                <div class="product-price">
+                    <span class="current-price">¥459.00</span>
+                    <span class="original-price">¥599.00</span>
+                </div>
+                <button class="add-to-cart">加入购物车</button>
+            </div>
+        </div>
+
+        <!-- 商品卡片3 -->
+        <div class="product-card">
+            <a href="#" class="product-image">
+                < img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=500" alt="女士针织衫">
+            </a >
+            <div class="product-info">
+                <h3 class="product-title">女士秋季针织衫 简约百搭毛衣</h3>
+                <div class="product-price">
+                    <span class="current-price">¥189.00</span>
+                    <span class="original-price">¥259.00</span>
+                </div>
+                <button class="add-to-cart">加入购物车</button>
+            </div>
+        </div>
+
+        <!-- 商品卡片4 -->
+        <div class="product-card">
+            <a href="#" class="product-image">
+                < img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=500" alt="智能手表">
+            </a >
+            <div class="product-info">
+                <h3 class="product-title">智能运动手表 心率监测GPS定位</h3>
+                <div class="product-price">
+                    <span class="current-price">¥899.00</span>
+                </div>
+                <button class="add-to-cart">加入购物车</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 轮播图功能
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+        
+        // 自动轮播
+        setInterval(nextSlide, 5000);
+        
+        // 购物车功能
+        const cartButtons = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        let cartItems = 3; // 初始数量
+        
+        cartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                cartItems++;
+                cartCount.textContent = cartItems;
+                
+                // 添加动画效果
+                this.textContent = '已添加';
+                this.style.backgroundColor = '#27ae60';
+                
+                setTimeout(() => {
+                    this.textContent = '加入购物车';
+                    this.style.backgroundColor = '';
+                }, 1000);
+            });
+        });
+        
+        // 搜索功能
+        const searchInput = document.querySelector('.search-bar input');
+        const searchButton = document.querySelector('.search-bar button');
+        
+        searchButton.addEventListener('click', function() {
+            const keyword = searchInput.value.trim();
+            if (keyword) {
+                alert(`搜索关键词: ${keyword}`);
+                // 实际应用中这里会跳转到搜索结果页
+            }
+        });
+        
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+    </script>
+</body>
+</html>
